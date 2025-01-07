@@ -1,5 +1,6 @@
 import random
 #import turtle
+
 import time #The other representation is a tuple of 9 integers giving local time. The tuple items are:   
 #year (including century, e.g. 1998) month (1-12) day (1-31) hours (0-23) minutes (0-59) seconds (0-59) weekday (0-6, Monday is 0)
 
@@ -37,7 +38,7 @@ def draw_map(field, snake_coord):
             else:
                 field.append([y, x, "."])
                 field_s = field_s + "."  
-                      
+
     # modifying an element in a sublist
     field[0][2] = '*'
     #print(field)
@@ -55,6 +56,7 @@ def field_refresh(x, y, input_key, s_length):
 field = field_setup()
 fieldcoord = field[0]
 field_s = field[1]
+
 
 print(field_s)
 #for dots in board:
