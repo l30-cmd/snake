@@ -3,4 +3,4 @@ simple snake game
 
 Pyladies final project
 
-group members: Eileen, D, l30 / Leo
+group members: Eileen, Marina, Klara, l30 / Leo
