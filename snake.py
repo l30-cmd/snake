@@ -13,7 +13,7 @@ def print_grid(grid):
 
 # Choosing which level and HOW FAST the snake is going to be
 # Function to be defined later on - in the testing phase the snake's speed is every 2 secounds.
-t = 2 # 2 sec delay
+t = 0.5 # 2 sec delay
 print (t)
 
 # Want to see what the previous 2 functions did.  Plus, personalise the presentation a bit.
@@ -39,6 +39,10 @@ def move_snake_safe(snake, key, grid_size=10):
         new_head = (head_x, head_y + 1)
     elif key == 'a':    # west or left
         new_head = (head_x, head_y - 1)
+
+    elif key == "l": # leaving the game
+        #leaving game needed implementation later on :D
+
     else:
         print("Invalid key! Use 'w', 's', 'a', or 'd' to move your snake.")  # "w", "a", "s", "d" for key, use
         return False  # Invalid key
@@ -74,19 +78,15 @@ def interactive_snake_game():
     grid_size = 10
     
     while True:
-        time.sleep(0.5)
+        time.sleep(t)
         print_grid(snake, grid_size)
         
         while True:
-            print("\n \n \n Which direction you wanna move?\n( w / a / s / d) or 'l' to leave the game: ")
+            print("Which direction you wanna move?\n( w / a / s / d) or 'l' to leave the game: ")
             from getkey import getkey, keys
             key = getkey()
-            
-            if key == "l":
-                break
 
-            elif not move_snake_safe(snake, key, grid_size):
-                print("Try a different move.")
+            move_snake_safe(snake, key, grid_size)
     
     print("Game over! \n Slither Sisters thank you for playing.")
     time.sleep(1)
