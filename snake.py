@@ -1,78 +1,98 @@
-import random
-#import turtle # will be implemented later on
+import time
+import getkey
 
-import time #The other representation is a tuple of 9 integers giving local time. The tuple items are:   
-#year (including century, e.g. 1998) month (1-12) day (1-31) hours (0-23) minutes (0-59) seconds (0-59) weekday (0-6, Monday is 0)
-# Idea: this module which gives us the time could maybe help with the timing of the snake's movement. 
-# fx.: the snake could move every sec.
+# Create a function to make a blank grid (just dots)
+def initial_grid(rows=10, cols=10):
+    grid = [['.' for _ in range(cols)] for _ in range(rows)]
+    return grid
 
-def field_setup():
-    # setting up a board 10x10 with "."
-    field = []
-    field_s = str()
-    yr = range(10)
-    xr = range(10)
+# Include this 2nd function to visualise the blank grid
+def print_grid(grid):
+    for row in grid:
+        print(' '.join(row))
 
-    for y in yr:
-        for x in xr:
-            field.append([y, x, "."])
-            field_s = field_s + "."
+# Choosing which level and HOW FAST the snake is going to be
+# Function to be defined later on - in the testing phase the snake's speed is every 2 secounds.
+t = 2 # 2 sec delay
+print (t)
 
-            x = x + 1
-        y = y + 1
-        field_s = field_s + '\n'
+# Want to see what the previous 2 functions did.  Plus, personalise the presentation a bit.
+grid = initial_grid()
+print('\n ~~~   ***   The Pyladies\' Slither Sisters present.   ***   ~~~ \n')
+time.sleep(t)
+print("Welcome to the Slither Sisters' version of Snake!\n \n")
+time.sleep(t)
+print_grid(grid)
+time.sleep(t)
+print('\n \n \n')
+time.sleep(t)
+# Step 3 & 4: Interactive Movement Loop
+
+def move_snake_safe(snake, key, grid_size=10):
+    head_x, head_y = snake[-1]
     
-    return(field, field_s)
+    if key == 'w':  # north or up
+        new_head = (head_x - 1, head_y)
+    elif key == 's':    # south or down
+        new_head = (head_x + 1, head_y)
+    elif key == 'd':    # east or right
+        new_head = (head_x, head_y + 1)
+    elif key == 'a':    # west or left
+        new_head = (head_x, head_y - 1)
+    else:
+        print("Invalid key! Use 'w', 's', 'a', or 'd' to move your snake.")  # "w", "a", "s", "d" for key, use
+        return False  # Invalid key
+    
+    # Check if the new position is out of bounds
+    if not (0 <= new_head[0] < grid_size and 0 <= new_head[1] < grid_size):
+        print("Invalid move: Out of bounds!")
+        return False
+    
+    # Check if the new position collides with the snake itself
+    if new_head in snake:
+        print("Invalid move: Collision detected!")
+        return False
+    
+    snake.append(new_head)
+    snake.pop(0)  # Maintain length
+    time.sleep(1)
+    print("\n \n \n *** ** * ** * ** *** \n \n \n")
+    print_grid(snake, grid_size)
+    print("\n \n \n")
+    
+    return True
 
-def draw_map(field, snake_coord):
-    # drawing the field with coordinates of the snake
-    # This part is for trying out what the project discription mentined
-    snake_x = snake_coord[0]
-    snake_y = snake_coord[1]
-    yr = range(10)
-    xr = range(10)
+def print_grid(snake, grid_size=10):
+    grid = [['.' for _ in range(grid_size)] for _ in range(grid_size)]
+    for x, y in snake:
+        grid[x][y] = 'X'
+    for row in grid:
+        print(" ".join(row))
 
-    for y in yr:
-        for x in xr:
-            if (y, x) in snake_coord:
-                field.append([y, x, '*'])
-            else:
-                field.append([y, x, "."])
-                field_s = field_s + "."  
+def interactive_snake_game():
+    snake = [(0,0), (0,1), (0,2)]  # Initial snake position
+    grid_size = 10
+    
+    while True:
+        time.sleep(0.5)
+        print_grid(snake, grid_size)
+        
+        while True:
+            print("\n \n \n Which direction you wanna move?\n( w / a / s / d) or 'l' to leave the game: ")
+            from getkey import getkey, keys
+            key = getkey()
+            
+            if key == "l":
+                break
 
-    # modifying an element in a sublist
-    field[0][2] = '*'
-    #print(field)
+            elif not move_snake_safe(snake, key, grid_size):
+                print("Try a different move.")
+    
+    print("Game over! \n Slither Sisters thank you for playing.")
+    time.sleep(1)
+    print("You are awesome no matter what!\n")
+    time.sleep(2)
+    print(" ***  Bye!  ***")
 
-def snake_go():
-    # moves snake per time straight forward
-    pass
-
-def field_refresh(x, y, input_key, s_length):
-    # gets the old position of the snake's head (x, y)
-    # gets the input_key and prints on the new position the head of the snake as ">"
-    # idea: probably we need the turtle to navigate on the board - maybe there are other ways to solve this
-    # later:  prints grid with snake with the lenght of the snake
-    #         fx. our snake could look like this:   ####>    (head pointing right with lenght 4 times # ) 
-    # later in the project:     prints grid (with walls)
-
-    pass
-
-
-field = field_setup()
-fieldcoord = field[0]
-field_s = field[1]
-
-
-print(field_s)
-#for dots in board:
-#    print(dots)
-#print(board(range(10), [3]))
-xm = range(10)
-#ym = range(10)
-#for yi in ym:
-#for xi in xm:
-#    print(board([xi][3])) 
-
-coordi = [(0,0),(1,0),(2,0),(2,1),(2,1),(3,1)]
-res2 = draw_map(fieldcoord, coordi)
+# Run the interactive game
+interactive_snake_game()
