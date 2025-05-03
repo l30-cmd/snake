@@ -1,4 +1,5 @@
 import random, time, threading, getkey
+# you need to install threading https://pypi.org/project/threaded/
 
 class GameStatus:           # defining and storing the game's status in a global class GameStatus. Otherwise the threats are coliding or only using local variables.
     def __init__(self, gridsize=10, speed=1.0):  # Added 'self' as the first parameter
